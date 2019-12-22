@@ -41,14 +41,15 @@ class Retry
                 break;
             } catch (\Exception $exception) {
                 $this->log .= sprintf(
-                    '%s: [%s of %s] [sleep %s] %s %s %s',
+                    '%s: [%s of %s] [sleep %s] %s %s %s %s',
                     time(),
                     $strategy->getCurrentAttempt(),
                     $strategy->getMaxAttempt(),
                     $strategy->getPrevTime(),
                     $exception->getMessage(),
                     PHP_EOL,
-                    $exception->getTraceAsString()
+                    $exception->getTraceAsString(),
+                    PHP_EOL
                 );
             }
         } while ($strategy->iterate());
