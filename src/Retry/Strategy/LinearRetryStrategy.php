@@ -21,8 +21,10 @@ class LinearRetryStrategy extends BasicRetryStrategy
      */
     public function __construct($waitTime, $maxAttempt)
     {
-        $this->waitTime   = $waitTime;
-        $this->maxAttempt = $maxAttempt;
+        $this->waitTime       = $waitTime;
+        $this->prevWaitTime   = $this->waitTime;
+        $this->currentAttempt = 1;
+        $this->maxAttempt     = $maxAttempt;
     }
 
     /**
