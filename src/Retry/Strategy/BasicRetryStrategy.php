@@ -30,7 +30,7 @@ abstract class BasicRetryStrategy implements RetryStrategy
      */
     public function hasIterate()
     {
-        return $this->getMaxAttempt() === BasicRetryStrategy::INF || $this->getCurrentAttempt() < (int) $this->getMaxAttempt();
+        return $this->getMaxAttempt() === BasicRetryStrategy::INF || $this->getCurrentAttempt() <= (int) $this->getMaxAttempt();
     }
 
     /**
