@@ -22,6 +22,11 @@ class Retry
     protected $log = '';
 
     /**
+     * @var bool
+     */
+    protected $success = false;
+
+    /**
      * @param RetryAction   $action
      * @param RetryStrategy $strategy
      */
@@ -30,6 +35,8 @@ class Retry
         do {
             try {
                 $action->execute();
+
+                $this->success = true;
 
                 break;
             } catch (\Exception $exception) {
@@ -53,5 +60,13 @@ class Retry
     public function getLog()
     {
         return $this->log;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSuccess()
+    {
+        return $this->success;
     }
 }
