@@ -14,7 +14,30 @@ Through composer:
         ...
     }
 
-Usage
-=====
+Usage (general example)
+=======================
 
+    $retry = new Retry();
     
+    $i = 0;
+
+    $retry->retry(
+        new RetryAction(
+            // can pass any action that can fail (database query, curl loading, etc)
+            function() use (&$i) {
+                // simulate non-periodic error (eg broken database connection)
+                $i++;
+
+                return ($i > 3) ? $i : 1 / 0;
+            },
+            4 // expect 4 as result for callable function
+        ),
+        new LinearRetryStrategy(10 /* timeout ms */, 5 /* retrying times */)
+    );
+
+    if ($retry->isSuccess()) {
+        // task success
+    } else {
+        // task failed
+        // echo $retry->getLog();
+    }
