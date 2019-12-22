@@ -15,6 +15,17 @@ namespace Retry\Strategy;
 class LinearRetryStrategy extends BasicRetryStrategy
 {
     /**
+     * LinearRetryStrategy constructor.
+     * @param int $waitTime
+     * @param int $maxAttempt
+     */
+    public function __construct($waitTime, $maxAttempt)
+    {
+        $this->waitTime   = $waitTime;
+        $this->maxAttempt = $maxAttempt;
+    }
+
+    /**
      * @return boolean
      */
     public function iterate()
