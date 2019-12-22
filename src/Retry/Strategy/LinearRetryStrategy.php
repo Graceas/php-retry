@@ -30,6 +30,7 @@ class LinearRetryStrategy extends BasicRetryStrategy
      */
     public function iterate()
     {
+        $this->prevWaitTime = $this->waitTime;
         $this->currentAttempt++;
         usleep($this->getNextTime());
 
