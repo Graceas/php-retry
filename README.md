@@ -42,6 +42,16 @@ Usage (general example)
         // echo $retry->getLog();
     }
 
+Example Output
+==============
+
+    echo $retry->getLog();
+
+    > 1577074792: [1 of 5] [sleep 10] Division by zero in /Users/gorelov/projects/php-retry/tests/RetryTest.php on line 52
+    > 1577074792: [2 of 5] [sleep 10] Division by zero in /Users/gorelov/projects/php-retry/tests/RetryTest.php on line 52
+    > 1577074792: [3 of 5] [sleep 10] Division by zero in /Users/gorelov/projects/php-retry/tests/RetryTest.php on line 52
+    > 1577074977: [4 of 5] [sleep 10] success
+
 Backoff Strategies
 ==================
 
