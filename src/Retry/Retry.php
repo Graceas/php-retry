@@ -24,7 +24,26 @@ class Retry
     /**
      * @var bool
      */
+    protected $includeTrace = false;
+
+    /**
+     * @var bool
+     */
     protected $success = false;
+
+    /**
+     * @var RetryStrategy
+     */
+    protected $strategy;
+
+    /**
+     * Retry constructor.
+     * @param bool $includeTrace
+     */
+    public function __construct($includeTrace = false)
+    {
+        $this->includeTrace = $includeTrace;
+    }
 
     /**
      * @param RetryAction   $action
@@ -32,35 +51,17 @@ class Retry
      */
     public function retry(RetryAction $action, RetryStrategy $strategy)
     {
+        $this->strategy = $strategy;
+
         do {
             try {
                 $action->execute();
-
                 $this->success = true;
-
-                $this->log .= sprintf(
-                    '%s: [%s of %s] [sleep %s] %s %s',
-                    time(),
-                    $strategy->getCurrentAttempt(),
-                    $strategy->getMaxAttempt(),
-                    $strategy->getNextTime(),
-                    'success',
-                    PHP_EOL
-                );
+                $this->addToLog('success');
 
                 break;
             } catch (\Exception $exception) {
-                $this->log .= sprintf(
-                    '%s: [%s of %s] [sleep %s] %s %s %s %s',
-                    time(),
-                    $strategy->getCurrentAttempt(),
-                    $strategy->getMaxAttempt(),
-                    $strategy->getNextTime(),
-                    $exception->getMessage(),
-                    PHP_EOL,
-                    $exception->getTraceAsString(),
-                    PHP_EOL
-                );
+                $this->addToLog($exception->getMessage().(($this->includeTrace) ? PHP_EOL.$exception->getTraceAsString() : '' ));
             }
         } while ($strategy->iterate());
     }
@@ -79,5 +80,21 @@ class Retry
     public function isSuccess()
     {
         return $this->success;
+    }
+
+    /**
+     * @param string $message
+     */
+    protected function addToLog($message)
+    {
+        $this->log .= sprintf(
+            '%s: [%s of %s] [sleep %s] %s %s',
+            time(),
+            $this->strategy->getCurrentAttempt(),
+            $this->strategy->getMaxAttempt(),
+            $this->strategy->getNextTime(),
+            $message,
+            PHP_EOL
+        );
     }
 }
