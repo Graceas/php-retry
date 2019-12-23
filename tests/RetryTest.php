@@ -11,6 +11,7 @@ namespace Retry\Tests;
 use PHPUnit\Framework\TestCase;
 use Retry\Retry;
 use Retry\RetryAction;
+use Retry\Strategy\ExponentialRetryStrategy;
 use Retry\Strategy\LinearRetryStrategy;
 
 /**
@@ -77,6 +78,30 @@ class RetryTest extends TestCase
                 }
             ),
             new LinearRetryStrategy(10, 5)
+        );
+
+        $this->assertTrue($retry->isSuccess());
+    }
+
+    public function testRetrySuccessWithCallbackExponential()
+    {
+        $retry = new Retry();
+
+        $i = 0;
+
+        $retry->retry(
+            new RetryAction(
+                function() use (&$i) {
+                    // simulate non-periodic error (eg broken database connection)
+                    $i++;
+
+                    return ($i > 3) ? $i : 1 / 0;
+                },
+                function ($result) {
+                    return ($result === 4) ? $result : false;
+                }
+            ),
+            new ExponentialRetryStrategy(10, 50)
         );
 
         $this->assertTrue($retry->isSuccess());

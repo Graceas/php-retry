@@ -41,3 +41,10 @@ Usage (general example)
         // task failed
         // echo $retry->getLog();
     }
+
+Backoff Strategies
+==================
+
+ExponentialRetryStrategy - 
+The base delay time is calculated as: time ^ attempt
+where attempt is the number of unsuccessful attempts that have been made.

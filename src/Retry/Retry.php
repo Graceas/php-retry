@@ -45,7 +45,7 @@ class Retry
                     time(),
                     $strategy->getCurrentAttempt(),
                     $strategy->getMaxAttempt(),
-                    $strategy->getPrevTime(),
+                    $strategy->getNextTime(),
                     $exception->getMessage(),
                     PHP_EOL,
                     $exception->getTraceAsString(),
