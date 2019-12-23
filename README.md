@@ -45,6 +45,9 @@ Usage (general example)
 Backoff Strategies
 ==================
 
+LinearRetryStrategy -
+Each attempt waits a configured time.
+
 ExponentialRetryStrategy - 
 The base delay time is calculated as: time ^ attempt
 where attempt is the number of unsuccessful attempts that have been made.
