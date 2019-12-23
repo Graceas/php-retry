@@ -10,7 +10,7 @@ Through composer:
 
     "require": {
         ...
-        "graceas/php-retry": "v0.0.2"
+        "graceas/php-retry": "v0.0.3"
         ...
     }
 
