@@ -38,6 +38,16 @@ class Retry
 
                 $this->success = true;
 
+                $this->log .= sprintf(
+                    '%s: [%s of %s] [sleep %s] %s %s',
+                    time(),
+                    $strategy->getCurrentAttempt(),
+                    $strategy->getMaxAttempt(),
+                    $strategy->getNextTime(),
+                    'success',
+                    PHP_EOL
+                );
+
                 break;
             } catch (\Exception $exception) {
                 $this->log .= sprintf(
